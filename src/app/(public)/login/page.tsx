@@ -1,0 +1,155 @@
+"use client";
+
+import Image from "next/image";
+import { useRef, useState } from "react";
+import SimpleReactValidator from "simple-react-validator";
+import { useRouter } from "next/navigation";
+import { PRIVATE_PATH } from "@/utils/constant";
+import config from "@/utils/config";
+import { useAppDispatch } from "@/store/hooks";
+import { login } from "@/store/actions/authAction";
+
+const LoginPage = () => {
+    const defaultState = {
+        email: "",
+        password: ""
+    }
+    const [formData, setFormData] = useState(defaultState);
+    const [error, setError] = useState("")
+    const router = useRouter();
+    const [, forceUpdate] = useState({});
+    const dispatch = useAppDispatch();
+
+    const simpleValidator = useRef(new SimpleReactValidator());
+
+
+
+    const handleSubmit = async (e: any) => {
+    
+        e.preventDefault();
+        if (simpleValidator.current.allValid()) {
+        
+            try {
+                if (formData?.email && formData?.password) {
+                    const payload = {
+                        username: formData?.email,
+                        password: formData?.password
+                    }
+                    const res = await dispatch(login(payload))
+                        debugger
+                        if(res){
+                            setFormData(defaultState);
+                            router.push(PRIVATE_PATH.HOME)
+                        }
+                }
+            } catch (err: any) {
+                setError("Error LogingIn")
+                console.log(err)
+            }
+        }
+        else {
+            simpleValidator.current.showMessages();
+            forceUpdate({});
+        }
+    };
+
+    const handleChange = (e: any) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        forceUpdate({});
+    }
+
+
+    return (
+        <div className="min-h-dvh grid grid-cols-1 lg:grid-cols-2 bg-secondary/90 text-background">
+            {/* Left hero section with background image and copy */}
+            <div className="relative hidden lg:block">
+                {/* Background image overlay */}
+                <Image
+                    src="/window.svg"
+                    alt="Background"
+                    fill
+                    className="object-cover opacity-60"
+                    priority
+                />
+                <div className="absolute inset-0 bg-black/40" />
+
+                <div className="relative z-10 h-full flex items-center">
+                    <div className="max-w-screen-md mx-auto px-8">
+                        <h1 className="font-heading text-4xl md:text-5xl leading-tight text-background font-[300]">
+                            Welcome to the Spinal Scope
+                        </h1>
+                        <p className="mt-6 text-base md:text-lg text-background/80 max-w-2xl font-extralight font-[300] tracking-[0.5px]">
+                            Spinal Scope is where your journey begins — a place to discover, learn, and grow. Join us as we explore new horizons and unlock your full potential.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right login card */}
+            <div className="relative flex items-center justify-center p-6 sm:p-10 bg-gradient-to-b from-background to-background/95 text-foreground">
+                <div className="w-full max-w-xl">
+                    <div className="bg-background/95 border border-foreground/10 shadow-xl rounded-2xl p-6 sm:p-8">
+                        {/* Logo */}
+                        <div className="flex items-center justify-center gap-3">
+                            <Image src="/globe.svg" alt="SpinalScope Logo" width={40} height={40} />
+                            <div className="text-center">
+                                <div className="text-3xl font-heading tracking-wide text-foreground">SpinalScope</div>
+                            </div>
+                        </div>
+
+                        {/* Form */}
+                        <form className="mt-8 space-y-5">
+                            <div>
+                                <label className="block text-sm font-medium text-foreground/80">Email</label>
+                                <div className="mt-2 relative">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        placeholder="Enter Email"
+                                        onChange={handleChange}
+                                        className="w-full rounded-md border border-foreground/20 bg-background px-4 py-3 text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    />
+                                    {simpleValidator.current.message("email", formData?.email, "required")}
+                                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40">@</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-foreground/80">Password</label>
+                                <div className="mt-2 relative">
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        placeholder="Enter Password"
+                                        onChange={handleChange}
+                                        className="w-full rounded-md border border-foreground/20 bg-background px-4 py-3 text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    />
+                                    {simpleValidator.current.message("password", formData?.password, "required")}
+                                    <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40">
+                                        ●
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div />
+                                <a href="#" className="text-sm text-primary hover:underline">Forgot Password?</a>
+                            </div>
+
+                            <button
+                                type="submit"
+                                onClick={handleSubmit}
+                                className="w-full inline-flex items-center justify-center rounded-md bg-secondary text-background px-4 py-3 font-medium hover:bg-secondary/90"
+                            >
+                                Login
+                            </button>
+                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default LoginPage;
