@@ -8,7 +8,7 @@ import { PUBLIC_PATH, ROUTES_PATH } from "@/utils/constant";
 
 export const RouterGuard = ({ children }: { children: React.ReactNode }) => { 
   const { token } = useAppSelector((state: RootState) => state.auth);
-debugger
+
   const router = useRouter();
   const pathname = usePathname();
   const [authorized, setAuthorized] = useState(false);
@@ -17,7 +17,7 @@ debugger
     authCheck(pathname);
   }, [token, pathname]);
 
-  function authCheck(url: string) {debugger
+  function authCheck(url: string) {
     const isPublicPath = Object.values(PUBLIC_PATH).includes(url)
 
     if (!token &&  !isPublicPath) {

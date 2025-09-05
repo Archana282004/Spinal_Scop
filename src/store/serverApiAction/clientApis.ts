@@ -11,7 +11,7 @@ interface PromiseType {
     data: AnyType<any>
 }
 
-export const post = async (url: string, body: object) => {debugger
+export const post = async (url: string, body: object) => {
     const res: any  = await new Promise((resolve, reject) => {
         API.post(url, body).then(async (res: any) => {
             if(res.success) {

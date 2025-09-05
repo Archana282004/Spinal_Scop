@@ -36,7 +36,7 @@ const LoginPage = () => {
                         password: formData?.password
                     }
                     const res = await dispatch(login(payload))
-                        debugger
+                        
                         if(res){
                             setFormData(defaultState);
                             router.push(PRIVATE_PATH.HOME)

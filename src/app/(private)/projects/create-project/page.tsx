@@ -1,6 +1,8 @@
 "use client";
 
 import TopBar from '@/components/hoc/LayoutComponent/TopBar';
+import SimpleReactValidator from 'simple-react-validator';
+import { useState, useRef } from 'react';
 
 const options = {
   visitIds: [
@@ -39,6 +41,58 @@ interface MultiSelectProps {
 }
 
 function MultiSelect({ label, value, onChange, options }: MultiSelectProps) {
+
+ 
+
+  const simpleValidator = useRef(new SimpleReactValidator);
+  const [, forceUpdate] = useState({});
+  const defaultForm={
+            id: "",
+            project_id: "",
+            name: "",
+            account_name: "",
+            regulated_project: "",
+            is_locked:"" ,
+            active_status: "",
+            created_at: "",
+            updated_at: "",
+            deletedAt: "",
+            anatomy: [
+                {
+                    id: "",
+                    created_at: "",
+                    active_status: "",
+                    updated_at: "",
+                    anatomy: {
+                        id: "",
+                        name: "",
+                        category: "",
+                        active_status: "",
+                        created_at: "",
+                        updated_at: ""
+                    }
+                }
+            ],
+            totalProjectSites: "",
+            totalProjectSubjects: ""
+        }
+      const handleSubmit = async (e: any) => {
+      
+          e.preventDefault();
+          if (simpleValidator.current.allValid()) {
+          
+              try {
+                 
+              } catch (err: any) {
+                 
+                  console.log(err)
+              }
+          }
+          else {
+              simpleValidator.current.showMessages();
+              forceUpdate({});
+          }
+      };
   return (
     <div>
       <label className="block font-body text-base text-foreground/80 mb-1">{label}</label>

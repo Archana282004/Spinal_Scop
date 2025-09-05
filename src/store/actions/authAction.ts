@@ -25,16 +25,13 @@ export const refreshToken = async (dispatch: AppDispatch) => {
 
 
 export const login = (formData: any) => async (dispatch: AppDispatch) => {
-    try {debugger
-      // const rawFormData = {
-      //   username: formData.get('username'),
-      //   password: formData.get('password')
-      // }
+    try {
+   
       const res = await API.post("/auth/signIn", formData);
-      debugger
+      
       if (res.success) {
         dispatch(
-          authReducer.login({ user: res.data.data.user, access_token: res.data.data.AuthenticationResult.AccessToken, refresh_token:res.data.data.AuthenticationResult.RefreshToken })
+          authReducer.login({ user: res.data.data.user, access_token: res.data.data.AuthenticationResult.IdToken, refresh_token:res.data.data.AuthenticationResult.RefreshToken })
         );
         forSuccess("Login successfully.");
       }
