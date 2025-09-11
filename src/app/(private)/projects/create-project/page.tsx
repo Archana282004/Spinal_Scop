@@ -7,6 +7,7 @@ import { addProject, visitIds, examIds, groupIds, analysisType, objectType, anat
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useRouter } from "next/navigation";
 import { PRIVATE_PATH } from '@/utils/constant';
+import Link from 'next/link';
 
 
 interface valueObj {
@@ -238,9 +239,9 @@ const ProjectForm = () => {
         <MultiSelect label="Analysis(-es)*" value={formData.analysis} name='Analysis' onChange={v => { handleSelectChange('analysis', v) }} options={analysis} />
         {simpleValidator.current.message('Analysis', formData?.analysis, "required")}
         <div className="flex justify-end gap-4 mt-6">
-          <button type="button" className="inline-flex items-center justify-center rounded-md px-4 py-2 bg-secondary text-background hover:bg-secondary/90 font-body text-base">
+          <Link href="/projects" className="inline-flex items-center justify-center rounded-md px-4 py-2 bg-secondary text-background hover:bg-secondary/90 font-body text-base">
             Cancel
-          </button>
+          </Link>
           <button type="submit" className="inline-flex items-center justify-center rounded-md px-4 py-2 bg-primary text-background hover:bg-primary/90 font-body text-base" onClick={handleSubmit}>
             Create New Project
           </button>

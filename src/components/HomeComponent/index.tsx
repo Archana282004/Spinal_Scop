@@ -146,14 +146,14 @@ export default function HomeComponent() {
                       </td>
                       <td className="px-4 py-3 text-right">
                         <Dropdown
-                          trigger={<span className="inline-flex h-6 w-6 items-center justify-center">⋯</span>}
-                          items={[
-                            { type: "link", href: "#", label: "View Details" },
-                            { type: "link", href: "#", label: "Edit" },
-                            { type: "button", label: "Delete" },
-                            { type: "button", label: "Inactive" },
-                          ]}
-                        />
+                      trigger={<span className="inline-flex h-6 w-6 items-center justify-center">⋯</span>}
+                      items={[
+                        { type: 'link', href: '#', label: 'View Details' },
+                        { type: 'link', href: '#', label: 'Edit' },
+                        { type: 'button', label: 'Delete' },
+                        { type: 'button', label: 'Inactive' },
+                      ]}
+                    />
                       </td>
                     </tr>
                   ))
