@@ -20,7 +20,11 @@ const LoginPage = () => {
     const [, forceUpdate] = useState({});
     const dispatch = useAppDispatch();
 
-    const simpleValidator = useRef(new SimpleReactValidator());
+     const simpleValidator = useRef(
+    new SimpleReactValidator({
+      element: (message:any) => <div style={{ color: "red" }}>{message}</div>,
+    })
+  );
 
 
 

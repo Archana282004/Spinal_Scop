@@ -9,9 +9,9 @@ import Cookies from "js-cookie";
 export const refreshToken = async (dispatch: AppDispatch) => {
   const res: any = await API.get("/api/auth/refresh");
 
-  if (res?.accessToken) {
-    Cookies.set('token', res.accessToken)
-    dispatch(authReducer.refreshToken(res.accessToken));
+  if (res?.token) {
+    Cookies.set('token', res.token)
+    dispatch(authReducer.refreshToken(res.token));
     return res.data;
   } else if (res === "token has expired") {
     dispatch({ type: "auth/logout" });

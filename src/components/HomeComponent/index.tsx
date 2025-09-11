@@ -92,7 +92,7 @@ export default function HomeComponent() {
               <option value="archived">Archived</option>
               <option value="deleted">Deleted</option>
             </select>
-            <Link href={""} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm text-background hover:bg-primary/90">
+            <Link href={"/projects/create-project"} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm text-background hover:bg-primary/90">
               Create New Project
             </Link>
           </div>

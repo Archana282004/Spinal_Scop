@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { AuthState, LoginRes } from "@/types/authType";
 
-const token = Cookies.get?.("AccessToken");
-const refresh_token = Cookies.get?.("RefreshToken");
+const token = Cookies.get?.("token");
+const refresh_token = Cookies.get?.("refresh_token");
 const user = null
 
 const initialState: AuthState = {
@@ -17,9 +17,9 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action: PayloadAction<LoginRes>) => {
-      Cookies.set("AccessToken", action.payload.access_token);
-      Cookies.set("RefreshToken", action.payload.refresh_token);
-      Cookies.set("User", JSON.stringify(action.payload.user));
+      Cookies.set("token", action.payload.access_token);
+      Cookies.set("refresh_token", action.payload.refresh_token);
+      Cookies.set("user", JSON.stringify(action.payload.user));
       state.token = action.payload.access_token;
       state.user = action.payload.user;
       state.refresh_token = action.payload.refresh_token;
