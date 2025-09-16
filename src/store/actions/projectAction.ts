@@ -2,8 +2,9 @@
 
 import { AppDispatch } from "../store"
 import * as API from "../serverApiAction/clientApis";
-import { productlisting, visitIdslist, examIdslist, groupIdslist,analysisTypelist, objectTypelist, anatomylist } from "../reducers/productReducer";
+import { productlisting, visitIdslist, examIdslist, groupIdslist,analysisTypelist, objectTypelist, anatomylist } from "../reducers/projectReducer";
 import { forSuccess } from "@/utils/CommonService";
+import { projectdetailing } from "../reducers/projectReducer";
 
 export const productlist = (params: any) => async (dispatch: AppDispatch) => {
   try{
@@ -102,4 +103,26 @@ export const anatomy = () => async (dispatch: AppDispatch) => {
     console.log("error", error)
   }
 }
+export const editProject = (id: any, formData:any) => async (dispatch: AppDispatch) =>{
+    try{
+        const res = await API.put(`/project/${id}`, formData);
+
+        if(res.success) {
+            forSuccess("Project Updated successfully.");
+        }
+        return res;
+    } catch(err){
+        console.log(err);
+    }
+};
+
+export const projectdetail = (id: any , params:any) => async (dispatch: AppDispatch) => { 
+  try {
+    const response = await API.get(`/project/${id}`, params);
+    dispatch(projectdetailing(response.data.data));
+    console.log("Fetched project:", response.data.data);
+  } catch (error) {
+    console.log("error", error);
+  }
+};
 

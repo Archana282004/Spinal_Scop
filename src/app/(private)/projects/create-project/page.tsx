@@ -1,5 +1,6 @@
-"use client";
+import ProjectForm from "@/components/CreateProjectComponent";
 
+<<<<<<< HEAD
 import TopBar from '@/components/hoc/LayoutComponent/TopBar';
 import SimpleReactValidator from 'simple-react-validator';
 import { useState, useRef, useEffect } from 'react';
@@ -252,3 +253,8 @@ const ProjectForm = () => {
 };
 
 export default ProjectForm;
+=======
+const CreateProject = () => <ProjectForm mode="create"  />;
+
+export default CreateProject;
+>>>>>>> ad06fa6 (Project Form - Edit)

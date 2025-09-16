@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Dropdown from "@/components/ui/Dropdown";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { productlist } from "@/store/actions/productAction";
+import { productlist } from "@/store/actions/projectAction";
 
 type StatusType = "Active" | "Inactive" | "Archived" | "Deleted";
 
@@ -46,7 +46,7 @@ export default function HomeComponent() {
 
   const products = useAppSelector((state) => state.product.products);
   console.log("Products  :", products);
-  const pageSizeOptions = [10];
+  const pageSizeOptions = [5,10,20];
   const [pageSize, setPageSize] = useState<number>(10);
   // Static dataset view; pagination controls are non-interactive in this view
 
@@ -72,6 +72,7 @@ export default function HomeComponent() {
       return "Inactive";
   }
 };
+
   return (
     <section className="bg-background text-foreground">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -146,6 +147,7 @@ export default function HomeComponent() {
                       </td>
                       <td className="px-4 py-3 text-right">
                         <Dropdown
+<<<<<<< HEAD
                       trigger={<span className="inline-flex h-6 w-6 items-center justify-center">⋯</span>}
                       items={[
                         { type: 'link', href: '#', label: 'View Details' },
@@ -154,6 +156,16 @@ export default function HomeComponent() {
                         { type: 'button', label: 'Inactive' },
                       ]}
                     />
+=======
+                          trigger={<span className="inline-flex h-6 w-6 items-center justify-center">⋯</span>}
+                          items={[
+                            { type: "link", href: `/projects/detail/${product.id}`, label: "View Details" },
+                            { type: "link", href: `/projects/update-project/${product.id}`, label: "Edit" },
+                            { type: "button", label: "Delete" },
+                            { type: "button", label: "Inactive" },
+                          ]}
+                        />
+>>>>>>> ad06fa6 (Project Form - Edit)
                       </td>
                     </tr>
                   ))

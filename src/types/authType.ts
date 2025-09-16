@@ -11,7 +11,7 @@ export type LoginRes = {
 }
 
 export type Product = {
-    id: number,
+    id: any,
     project_id: string,
     name: string,
     account_name: string,
@@ -122,4 +122,108 @@ export type anatomies = {
             ]
 }
 
+export type ProjectDetail =  {
+        id: number,
+        project_id: string,
+        name: string,
+        account_name: string,
+        regulated_project: boolean,
+        is_locked: boolean,
+        active_status: string,
+        created_at: string,
+        updated_at: string,
+        deletedAt: null,
+        visitIds: [
+            {
+                id: number,
+                name: string,
+                category:string,
+                active_status:string,
+                created_at: string,
+                updated_at: string
+            }
+        ],
+        projectExams: [
+            {
+                id: number,
+                created_at: string,
+                updated_at: string,
+                exam: {
+                    id: number,
+                    name: string,
+                    category: string,
+                    active_status: string,
+                    created_at: string,
+                    updated_at: string
+                },
+                projectAnalysisTypes: [
+                    {
+                        id: number,
+                        created_at: string,
+                        updated_at: string,
+                        analysisType: {
+                            id: number,
+                            name: string,
+                            category: string,
+                            active_status: string,
+                            created_at: string,
+                            updated_at: string
+                        }
+                    }
+                ]
+            }
+        ],
+        objectType: {
+            id: string,
+            name: string,
+            active_status: string,
+            created_at: string,
+            updated_at: string
+        },
+        groups: [
+            {
+                id: number,
+                name: string,
+                active_status: string,
+                created_at: string,
+                updated_at: string
+            }
+        ],
+        anatomy: [
+            {
+                id: number,
+                created_at: string,
+                active_status: string,
+                updated_at: string,
+                anatomy: {
+                    id: number,
+                    name: string,
+                    category: string,
+                    active_status: string,
+                    created_at: string,
+                    updated_at: string
+                },
+                projectIndexLocations: [
+                    {
+                        id: number,
+                        created_at: string,
+                        updated_at: string,
+                        indexLocation: {
+                            id: number,
+                            name: string,
+                            category: string,
+                            has_NA: boolean,
+                            has_NA_in_vertebrae: boolean,
+                            vertebrae_type: string,
+                            active_status: string,
+                            created_at: string,
+                            updated_at: string,
+                        }
+                    }
+                ]
+            }
+        ],
+        totalProjectSites: number,
+        totalProjectSubjects: number
+    }
 

@@ -3,7 +3,9 @@ export const PUBLIC_PATH = {
 };
 
 export const PRIVATE_PATH = {
-  HOME: "/projects"
+  HOME: "/projects",
+  UPDATE: "/projects/update-project"
+  
 }
 
 export const ROUTES_PATH = {
