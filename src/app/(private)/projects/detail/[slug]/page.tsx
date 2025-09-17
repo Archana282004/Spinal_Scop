@@ -1,7 +1,8 @@
 "use client"
-import { useAppSelector } from "@/store/hooks";
+import { projectdetail } from "@/store/actions/projectAction";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ProjectDetailPage = () => {
 
@@ -53,59 +54,72 @@ const ProjectDetailPage = () => {
     handleCloseCreateSubject();
   };
   const params = useParams();
-  const projects = useAppSelector((state) => state.product.products);
   const selectedId = params.slug;
-  const { projectdetails  } = useAppSelector((state) => state.product)
-  console.log("projectdetails",projectdetails)
+  const { projectdetails } = useAppSelector((state) => state.product)
+  console.log("projectdetails", projectdetails)
+  console.log("id", projectdetails?.project_id)
+  const dispatch = useAppDispatch();
+  const param = {
+    level: "Project",
+    operation: "view"
+  }
+  useEffect(() => {
+    if (selectedId) {
+      dispatch(projectdetail(selectedId, param))
+    }
+  }, [])
 
+  
 
   return (
     <>
       <div className="bg-background min-h-screen py-8 px-4">
         <div className="max-w-screen-xl mx-auto">
-          <h2 className="font-heading text-3xl md:text-4xl text-primary mb-2">Example Project Name</h2>
+          <h2 className="font-heading text-3xl md:text-4xl text-primary mb-2">{projectdetails?.name}</h2>
           <div className="flex flex-wrap gap-4 items-center mb-6">
 
             <span className="font-body text-base text-foreground/80">
-              Project ID: <span className="text-foreground font-semibold"></span>
+              Project ID: <span className="text-foreground font-semibold">{projectdetails?.id}</span>
             </span>
             <span className="px-4 py-1 rounded-md bg-primary text-background font-body text-sm">
-              Regulated Project
+              {projectdetails?.regulated_project ? "Regulated Project" : "Not Regulated Project"}
             </span>
             <span className="font-body text-base text-foreground/80">
-              Created Date: <span className="text-foreground font-semibold">2024-06-01</span>
+              Created Date: <span className="text-foreground font-semibold">{projectdetails?.created_at.split("T")[0]}</span>
             </span>
             <button className="ml-auto px-4 py-2 rounded-md bg-secondary text-background hover:bg-secondary/90 font-body text-base">
               Generate Report
             </button>
-            <button className="px-4 py-2 rounded-md border border-primary text-primary hover:bg-primary/10 font-body text-base">
+            <button  className="px-4 py-2 rounded-md border border-primary text-primary hover:bg-primary/10 font-body text-base">
               Edit
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="bg-background border border-foreground/10 rounded-lg p-4">
               <div className="mb-2 font-body text-base text-foreground/80">
-                <span className="font-semibold">Visit ID(s):</span> VST-101, VST-102
+                <span className="font-semibold">Visit ID(s):</span> {projectdetails?.visitIds.map((item)=> item.name).join(", ")}
               </div>
               <div className="mb-2 font-body text-base text-foreground/80">
-                <span className="font-semibold">Exam(s):</span> Exam A, Exam B
+                <span className="font-semibold">Exam(s):</span> {projectdetails?.projectExams.map((item) => item?.exam?.name).join(", ")}
               </div>
               <div className="mb-2 font-body text-base text-foreground/80">
-                <span className="font-semibold">Analysis(-es):</span> Analysis 1, Analysis 2
+                <span className="font-semibold">Analysis(-es):</span> {projectdetails?.projectExams[0]?.projectAnalysisTypes.map((item) => item?.analysisType?.name).join(", ")}
               </div>
             </div>
             <div className="bg-background border border-foreground/10 rounded-lg p-4 flex flex-wrap gap-2">
               <span className="px-3 py-1 rounded bg-primary text-background font-body text-sm">
-                Group(s): Group 1, Group 2
+                Group(s): {projectdetails?.groups.map((item)=>item?.name).join(", ")}
               </span>
               <span className="px-3 py-1 rounded bg-background border border-primary text-primary font-body text-sm">
-                Anatomy: Heart, Brain
+                Anatomy:{projectdetails?.anatomy.map((item) => item?.anatomy?.name)}<span>
+                  
+                </span>
               </span>
               <span className="px-3 py-1 rounded bg-background border border-primary text-primary font-body text-sm">
-                Index Location(s): Location 1, Location 2
+                Index Location(s):{projectdetails?.anatomy[0]?.projectIndexLocations?.map((item) => item?.indexLocation?.name).join(", ")}
               </span>
               <span className="px-3 py-1 rounded bg-background border border-primary text-primary font-body text-sm">
-                Object Type(s): Type A, Type B
+                Object Type(s): {projectdetails?.objectType?.name}
               </span>
             </div>
           </div>

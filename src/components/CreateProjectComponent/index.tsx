@@ -13,44 +13,59 @@ import { editProject, projectdetail } from "@/store/actions/projectAction";
 
 export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }) {
 
-const defaultForm = {
-  project_id: "",
-  name: "",
-  account_name: " ",
-  regulated_project: "",
-  anatomy: [{ id: '', name: '' }],
-  index_locations_id: [{ id: '', name: '' }],
-  object_type_id: [{ id: '', name: '' }],
-  groups: [{ id: '', name: '' }],
-  exam_ids: [{ id: '', name: '' }],
-  analysis: [{ id: '', name: '' }],
-  visit_ids: [{ id: '', name: '' }]
-};
+    const defaultForm = {
+        project_id: "",
+        name: "",
+        account_name: " ",
+        regulated_project: "",
+        anatomy: [{ id: '', name: '' }],
+        index_locations_id: [{ id: '', name: '' }],
+        object_type_id: [{ id: '', name: '' }],
+        groups: [{ id: '', name: '' }],
+        exam_ids: [{ id: '', name: '' }],
+        analysis: [{ id: '', name: '' }],
+        visit_ids: [{ id: '', name: '' }]
+    };
 
     const [formData, setFormData] = useState(defaultForm);
     console.log('formData', formData);
-    const { projectdetails  } = useAppSelector((state) => state.product)
+    const { projectdetails } = useAppSelector((state) => state.product)
+    
 
     useEffect(() => {
-        if (projectdetails) {
-            
+        if (mode === "edit" && projectdetails) {
+
             setFormData({
                 project_id: projectdetails?.project_id,
                 name: projectdetails?.name,
                 account_name: projectdetails?.account_name,
                 regulated_project: projectdetails.regulated_project ? "true" : "false",
-                anatomy: projectdetails.anatomy?.map((item:any) => { return { id: item?.anatomy?.id, name: item?.anatomy?.name } }),
-                index_locations_id: projectdetails?.anatomy[0]?.projectIndexLocations.map((item:any) => { return { id: item?.indexLocation?.id, name: item?.indexLocation?.name } }),
-                exam_ids: projectdetails.projectExams.map((item:any) => { return { id: item?.exam?.id, name: item?.exam?.name } }),
-                analysis: projectdetails.projectExams[0].projectAnalysisTypes.map((item:any) => { return { id: item?.analysisType?.id, name: item?.analysisType?.name } }),
-                visit_ids: projectdetails.visitIds.map((item:any) => { return { id: item?.id, name: item?.name } }),
-                groups: projectdetails.groups.map((item:any) => { return { id: item?.id, name: item?.name } }),
-                object_type_id: [{ id: projectdetails.objectType.id, name: projectdetails.objectType.name}],
+                anatomy: projectdetails.anatomy?.map((item: any) => { return { id: item?.anatomy?.id, name: item?.anatomy?.name } }),
+                index_locations_id: projectdetails?.anatomy[0]?.projectIndexLocations.map((item: any) => { return { id: item?.indexLocation?.id, name: item?.indexLocation?.name } }),
+                exam_ids: projectdetails.projectExams.map((item: any) => { return { id: item?.exam?.id, name: item?.exam?.name } }),
+                analysis: projectdetails.projectExams[0].projectAnalysisTypes.map((item: any) => { return { id: item?.analysisType?.id, name: item?.analysisType?.name } }),
+                visit_ids: projectdetails.visitIds.map((item: any) => { return { id: item?.id, name: item?.name } }),
+                groups: projectdetails.groups.map((item: any) => { return { id: item?.id, name: item?.name } }),
+                object_type_id: [{ id: projectdetails.objectType.id, name: projectdetails.objectType.name }],
 
 
             });
+        } else {
+            setFormData({
+                project_id: "",
+                name: "",
+                account_name: " ",
+                regulated_project: "",
+                anatomy: [],
+                index_locations_id: [],
+                object_type_id: [],
+                groups: [],
+                exam_ids: [],
+                analysis: [],
+                visit_ids: []
+            })
         }
-    }, [projectdetails]);
+    }, [mode, projectdetails]);
     const [error, setError] = useState("");
     const dispatch = useAppDispatch();
     const router = useRouter();
