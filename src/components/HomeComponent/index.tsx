@@ -37,7 +37,9 @@ export default function HomeComponent() {
   const defaultPagination = {
     status:"active",
     level:"Project",
-    operation:"view"
+    operation:"view",
+    limit:'10',
+    page:'1'
   }
   const [pagination, setPagination] = useState(defaultPagination)
   useEffect(() => {
@@ -145,7 +147,7 @@ export default function HomeComponent() {
                       <td className="px-4 py-3">
                         <StatusBadge status={mapStatus(product.active_status)} />
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-4 py-2">
                         <Dropdown
                           trigger={<span className="inline-flex h-6 w-6 items-center justify-center">⋯</span>}
                           items={[

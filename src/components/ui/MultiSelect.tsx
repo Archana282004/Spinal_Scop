@@ -15,7 +15,6 @@ interface MultiSelectProps {
 
 
 function MultiSelect({ label, value, onChange, options, name, disabled }: MultiSelectProps) {
-  console.log(value,"ggggg");
   
   return (
     <div>

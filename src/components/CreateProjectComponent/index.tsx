@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useParams, useRouter } from "next/navigation";
 import { PRIVATE_PATH } from '@/utils/constant';
 import MultiSelect from "../ui/MultiSelect";
-import { editProject, projectdetail } from "@/store/actions/projectAction";
+import { editProject, projectdetailss } from "@/store/actions/projectAction";
 
 
 export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }) {
@@ -28,9 +28,8 @@ export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }
     };
 
     const [formData, setFormData] = useState(defaultForm);
-    console.log('formData', formData);
     const { projectdetails } = useAppSelector((state) => state.product)
-    
+
 
     useEffect(() => {
         if (mode === "edit" && projectdetails) {
@@ -146,11 +145,11 @@ export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }
         dispatch(objectType());
         dispatch(anatomy())
         if (id) {
-            dispatch(projectdetail(id, param))
+            dispatch(projectdetailss(id, param))
         }
 
 
-    }, [])
+    }, [id])
 
     useEffect(() => {
 

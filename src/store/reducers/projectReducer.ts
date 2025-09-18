@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product, visit, exam, group, analysis, objectt, anatomies, ProjectDetail } from '@/types/authType';
+import { Product, visit, exam, group, analysis, objectt, anatomies, ProjectDetail , Site} from '@/types/authType';
 
 interface ProductState {
   products: Product[];
@@ -10,6 +10,7 @@ interface ProductState {
   objectt: objectt[];
   anatomies: anatomies[];
   projectdetails: ProjectDetail | null;
+  sites:Site[]
 }
 
 const initialState: ProductState = {
@@ -20,7 +21,8 @@ const initialState: ProductState = {
   analysis: [],
   objectt: [],
   anatomies: [],
-  projectdetails: null
+  projectdetails: null,
+  sites:[]
 }
 export const projectSlice = createSlice({
   name: "product",
@@ -47,8 +49,11 @@ export const projectSlice = createSlice({
     anatomylist: (state, action: PayloadAction<anatomies[]>) => {
       state.anatomies = action.payload;
     },
-    projectdetailing: (state, action: PayloadAction<ProjectDetail>) => {
+    projectdetail: (state, action: PayloadAction<ProjectDetail>) => {
       state.projectdetails = action.payload;
+    },
+    sitelisting: (state, action: PayloadAction<Site[]>) => {
+      state.sites = action.payload;
     }
   }
 })
@@ -56,5 +61,5 @@ export const projectSlice = createSlice({
 
 
 
-export const { productlisting, visitIdslist, examIdslist, groupIdslist, analysisTypelist, objectTypelist, anatomylist, projectdetailing } = projectSlice.actions;
+export const { productlisting, visitIdslist, examIdslist, groupIdslist, analysisTypelist, objectTypelist, anatomylist, projectdetail , sitelisting} = projectSlice.actions;
 export default projectSlice.reducer;
