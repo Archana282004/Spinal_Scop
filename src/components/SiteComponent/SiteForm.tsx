@@ -8,7 +8,7 @@ import SimpleReactValidator from "simple-react-validator";
 interface SiteFormProps {
   selectedSite: string | null;
   setIsCreateSiteOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  
+
 }
 
 const SiteForm: React.FC<SiteFormProps> = ({
@@ -30,7 +30,6 @@ const SiteForm: React.FC<SiteFormProps> = ({
   const siteid = Number(selectedSite);
   const handleCloseCreateSite = () => {
     setIsCreateSiteOpen(false);
-
   };
   const simpleValidator = useRef(
         new SimpleReactValidator({
@@ -64,7 +63,7 @@ const SiteForm: React.FC<SiteFormProps> = ({
         }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e:  React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 

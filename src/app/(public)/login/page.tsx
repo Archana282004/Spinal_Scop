@@ -1,7 +1,7 @@
 "use client";
 interface Form {
-    email:string;
-    password:string
+    email: string;
+    password: string
 }
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -22,19 +22,19 @@ const LoginPage = () => {
     const [, forceUpdate] = useState({});
     const dispatch = useAppDispatch();
 
-     const simpleValidator = useRef(
-    new SimpleReactValidator({
-      element: (message:string) => <div style={{ color: "red" }}>{message}</div>,
-    })
-  );
+    const simpleValidator = useRef(
+        new SimpleReactValidator({
+            element: (message: string) => <div style={{ color: "red" }}>{message}</div>,
+        })
+    );
 
 
 
-    const handleSubmit = async (e:  React.FormEvent ) => {
-    
+    const handleSubmit = async (e: React.FormEvent) => {
+
         e.preventDefault();
         if (simpleValidator.current.allValid()) {
-        
+
             try {
                 if (formData?.email && formData?.password) {
                     const payload = {
@@ -42,11 +42,11 @@ const LoginPage = () => {
                         password: formData?.password
                     }
                     const res = await dispatch(login(payload))
-                        
-                        if(res){
-                            setFormData(defaultState);
-                            router.push(PRIVATE_PATH.HOME)
-                        }
+
+                    if (res) {
+                        setFormData(defaultState);
+                        router.push(PRIVATE_PATH.HOME)
+                    }
                 }
             } catch (err: any) {
                 setError("Error LogingIn")
@@ -58,10 +58,11 @@ const LoginPage = () => {
         }
     };
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
         forceUpdate({});
-    }
+    };
+
 
 
     return (

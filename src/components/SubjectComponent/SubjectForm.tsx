@@ -37,7 +37,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({
     );
     const [, forceUpdate] = useState({});
 
-    const handleChange = (e: any) => {
+    const handleChange = (e:  React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 

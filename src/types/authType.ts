@@ -482,7 +482,15 @@ export type groups ={
     created_at: string;
     updated_at: string;
 }
-export type ItemType= {
-    id: string;
-    name: string;
-}[]
+export type EditForm = {
+    subjectID: string;
+    group_id: string;
+    index_location_ids: string;
+    level: string;
+    operation: string;
+}
+
+export type IndexItem = {
+  id: string;
+  name: string;
+}

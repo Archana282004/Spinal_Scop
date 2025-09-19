@@ -1,8 +1,8 @@
 "use client"
-import { addSite, projectdetailss } from "@/store/actions/projectAction";
+import { projectdetailss } from "@/store/actions/projectAction";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SiteForm from "@/components/SiteComponent/SiteForm";
 import SubjectForm from "@/components/SubjectComponent/SubjectForm";
 import SiteTable from "@/components/SiteComponent/SiteTable";
@@ -98,7 +98,7 @@ const ProjectDetailComponent = () => {
 
           {/* Create New Site Modal */}
           {isCreateSiteOpen && <SiteForm
-            selectedSite={selectedSite}
+            selectedSite={null}
             setIsCreateSiteOpen={setIsCreateSiteOpen}
           />
           }

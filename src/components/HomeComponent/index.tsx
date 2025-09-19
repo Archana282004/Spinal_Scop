@@ -30,7 +30,6 @@ const StatusBadge = ({ status }: { status: StatusType }) => {
   );
 };
 
-// Deprecated inline ActionMenu kept out to avoid inflating table height
 
 export default function HomeComponent() {
   const dispatch = useAppDispatch();

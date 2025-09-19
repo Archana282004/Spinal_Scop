@@ -5,7 +5,7 @@ import * as API from "../serverApiAction/clientApis";
 import { productlisting, visitIdslist, examIdslist, groupIdslist, analysisTypelist, objectTypelist, anatomylist, sitelisting, subjectlisting } from "../reducers/projectReducer";
 import { forSuccess } from "@/utils/CommonService";
 import { projectdetail} from "../reducers/projectReducer";
-import { HomeParam, Project, ProjectDetailParam, SiteForm, SiteTable, SubForm, SubTable } from "@/types/authType";
+import { EditForm, HomeParam, Project, ProjectDetailParam, SiteForm, SiteTable, SubForm, SubTable } from "@/types/authType";
 
 export const productlist = (params: HomeParam) => async (dispatch: AppDispatch) => {
   try {
@@ -163,7 +163,7 @@ export const addSubject = (id: number, siteid:number, formData: SubForm) => asyn
   }
 };
 
-export const editSite = (id: number, siteid:number , formData: SubForm) => async () => {
+export const editSite = (id: number, siteid:number , formData: SiteForm) => async () => {
   try {
     const res = await API.put(`/project/${id}/sites/${siteid}`, formData);
     if (res.success) {

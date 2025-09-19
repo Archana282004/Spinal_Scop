@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from "next/link";
 import { addProject, visitIds, examIds, groupIds, analysisType, objectType, anatomy } from '@/store/actions/projectAction';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { useParams, useRouter } from "next/navigation";
+import {useRouter } from "next/navigation";
 import { PRIVATE_PATH } from '@/utils/constant';
 import MultiSelect from "../ui/MultiSelect";
 import { editProject, projectdetailss } from "@/store/actions/projectAction";
@@ -81,7 +81,7 @@ export default function ProjectForm({ mode, id }: ProjectFormProps) {
         })
     );
     const [, forceUpdate] = useState({});
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (simpleValidator.current.allValid()) {
             try {
@@ -121,7 +121,7 @@ export default function ProjectForm({ mode, id }: ProjectFormProps) {
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement >) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
         forceUpdate({});
     }
