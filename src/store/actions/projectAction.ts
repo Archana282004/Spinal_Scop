@@ -2,11 +2,12 @@
 
 import { AppDispatch } from "../store"
 import * as API from "../serverApiAction/clientApis";
-import { productlisting, visitIdslist, examIdslist, groupIdslist, analysisTypelist, objectTypelist, anatomylist, sitelisting } from "../reducers/projectReducer";
+import { productlisting, visitIdslist, examIdslist, groupIdslist, analysisTypelist, objectTypelist, anatomylist, sitelisting, subjectlisting } from "../reducers/projectReducer";
 import { forSuccess } from "@/utils/CommonService";
 import { projectdetail} from "../reducers/projectReducer";
+import { HomeParam, Project, ProjectDetailParam, SiteForm, SiteTable, SubForm, SubTable } from "@/types/authType";
 
-export const productlist = (params: any) => async (dispatch: AppDispatch) => {
+export const productlist = (params: HomeParam) => async (dispatch: AppDispatch) => {
   try {
     const response = await API.get("/project", params);
     dispatch(productlisting(response.data.data))
@@ -16,7 +17,7 @@ export const productlist = (params: any) => async (dispatch: AppDispatch) => {
   }
 }
 
-export const addProject = (formData: any) => async (dispatch: AppDispatch) => {
+export const addProject = (formData: Project) => async () => {
   try {
 
     const res = await API.post("/project", formData);
@@ -89,7 +90,7 @@ export const anatomy = () => async (dispatch: AppDispatch) => {
     console.log("error", error)
   }
 }
-export const editProject = (id: any, formData: any) => async (dispatch: AppDispatch) => {
+export const editProject = (id: number, formData: Project) => async () => {
   try {
     const res = await API.put(`/project/${id}`, formData);
     if (res.success) {
@@ -101,7 +102,7 @@ export const editProject = (id: any, formData: any) => async (dispatch: AppDispa
   }
 };
 
-export const projectdetailss = (id: any, params: any) => async (dispatch: AppDispatch) => {
+export const projectdetailss = (id: number, params: ProjectDetailParam) => async (dispatch: AppDispatch) => {
   try {
     const response = await API.get(`/project/${id}`, params);
     dispatch(projectdetail(response.data.data));
@@ -110,11 +111,10 @@ export const projectdetailss = (id: any, params: any) => async (dispatch: AppDis
   }
 };
 
-export const sitelist = (id:any, params: any) => async (dispatch: AppDispatch) => {
+export const sitelist = (id:number, params: SiteTable) => async (dispatch: AppDispatch) => {
   try {
     const response = await API.get(`/project/${id}/sites`, params);
     dispatch(sitelisting(response.data.data.sites))
-    console.log("site", response.data.data.sites)
     
   }
   catch (error) {
@@ -123,7 +123,7 @@ export const sitelist = (id:any, params: any) => async (dispatch: AppDispatch) =
   }
 }
 
-export const addSite = (id: any, formData: any) => async (dispatch: AppDispatch) => {
+export const addSite = (id: number, formData:SiteForm) => async () => {
   try {
 
     const res = await API.post(`/project/${id}/sites`, formData);
@@ -137,5 +137,41 @@ export const addSite = (id: any, formData: any) => async (dispatch: AppDispatch)
     console.log(err);
   }
 };
+export const subjectlist = (id:number, siteid: number ,params: SubTable) => async (dispatch: AppDispatch) => {
+  try {
+    const response = await API.get(`/project/${id}/sites/${siteid}/subjects`, params);
+    dispatch(subjectlisting(response.data.data.subjects))
+    
+  }
+  catch (error) {
 
+    console.log("error", error)
+  }
+}
+export const addSubject = (id: number, siteid:number, formData: SubForm) => async () => {
+  try {
+
+    const res = await API.post(`/project/${id}/sites/${siteid}/subjects`, formData);
+    
+
+    if (res.success) {
+      forSuccess("Subject created successfully.");
+    }
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editSite = (id: number, siteid:number , formData: SubForm) => async () => {
+  try {
+    const res = await API.put(`/project/${id}/sites/${siteid}`, formData);
+    if (res.success) {
+      forSuccess("Site Updated successfully.");
+    }
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
 

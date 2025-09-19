@@ -3,8 +3,6 @@ import Dropdown from "../ui/Dropdown";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { sitelist } from "@/store/actions/projectAction";
-import { Site } from "@/types/authType";
-
 interface SiteTableProps {
     handleOpenCreateSite: () => void;
     selectedSite: string | null;
@@ -16,27 +14,26 @@ const SiteTable: React.FC<SiteTableProps> = ({
     selectedSite,
     setSelectedSite,
 }) => {
-   const idd = useParams();
-   const id = idd.slug;
+    const idd = useParams();
+    const id = Number(idd.slug);
     const params = {
-        
-        level:"Project",
-        operation:"view",
-        page:"1",
-        limit:"10",
-        sort:"DESC",
-        active_status:"active"
+
+        level: "Project",
+        operation: "view",
+        page: "1",
+        limit: "10",
+        sort: "DESC",
+        active_status: "active"
     }
     const dispatch = useAppDispatch();
-    useEffect(()=>{
-       if(id){
-         dispatch(sitelist(id, params));
-       }
-    },[id])
+    useEffect(() => {
+        if (id) {
+            dispatch(sitelist(id, params));
+        }
+    }, [id])
 
     const sites = useAppSelector((state) => state.product.sites)
-    console.log("sites", sites)
-    return ( 
+    return (
         <div>
             <div className="mt-8">
                 <div className="flex items-center justify-between mb-4">
@@ -62,40 +59,42 @@ const SiteTable: React.FC<SiteTableProps> = ({
                             </tr>
                         </thead>
                         <tbody>
-                           {sites.length === 0 ? (
-                  <tr>
-                    <td colSpan={9} className="px-4 py-6 text-center text-sm text-foreground/50">
-                      No Sites found.
-                    </td>
-                  </tr>
-                ) : (
-                  sites.map((sites) => (
-                            <tr
-                                key={sites.id}
-                                className={`border-t border-foreground/10 cursor-pointer transition-colors ${selectedSite === "V 01" ? "bg-primary/10" : "hover:bg-primary/5"}`}
-                                
-                            >
-                                <td className="px-4 py-2">{sites.siteID}</td>
-                                <td className="px-4 py-2">{sites.name}</td>
-                                <td className="px-4 py-2">{sites.totalSubjects}</td>
-                                <td className="px-4 py-2">{sites.sitePI}</td>
-                                <td className="px-4 py-2">{sites.created_at.split("T")[0]}</td>
-                                <td className="px-4 py-2">
-                                    <span className="inline-block px-3 py-1 rounded font-semibold text-xs bg-primary/10 text-primary">{sites.active_status}</span>
-                                </td>
-                                <td className="px-4 py-2">
-                                    <Dropdown
-                                        trigger={<span className="inline-flex h-6 w-6 items-center justify-center">⋯</span>}
-                                        items={[
-                                            { type: "link", href: "#", label: "View Details" },
-                                            { type: "link", href: "#", label: "Edit" },
-                                            { type: "button", label: "Delete" },
-                                            { type: "button", label: "Inactive" },
-                                        ]}
-                                    />
-                                </td>
-                            </tr>
-                  )))
+                            {sites.length === 0 ? (
+                                <tr>
+                                    <td colSpan={9} className="px-4 py-6 text-center text-sm text-foreground/50">
+                                        No Sites found.
+                                    </td>
+                                </tr>
+                            ) : (
+                                sites.map((sites) => (
+                                    <tr
+                                        key={sites.id}
+                                        className={`border-t border-foreground/10 cursor-pointer transition-colors ${selectedSite === "V 01" ? "bg-primary/10" : "hover:bg-primary/5"}`}
+                                        onClick={() =>
+                                            setSelectedSite(selectedSite === String(sites.id) ? null : String(sites.id))
+                                        }
+                                    >
+                                        <td className="px-4 py-2">{sites.siteID}</td>
+                                        <td className="px-4 py-2">{sites.name}</td>
+                                        <td className="px-4 py-2">{sites.totalSubjects}</td>
+                                        <td className="px-4 py-2">{sites.sitePI}</td>
+                                        <td className="px-4 py-2">{sites.created_at.split("T")[0]}</td>
+                                        <td className="px-4 py-2">
+                                            <span className="inline-block px-3 py-1 rounded font-semibold text-xs bg-primary/10 text-primary">{sites.active_status}</span>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <Dropdown
+                                                trigger={<span className="inline-flex h-6 w-6 items-center justify-center">⋯</span>}
+                                                items={[
+                                                    { type: "link", href: "#", label: "View Details" },
+                                                    { type: "link", href: "#", label: "Edit" },
+                                                    { type: "button", label: "Delete" },
+                                                    { type: "button", label: "Inactive" },
+                                                ]}
+                                            />
+                                        </td>
+                                    </tr>
+                                )))
                             }
                         </tbody>
                     </table>

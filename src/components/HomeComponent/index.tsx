@@ -47,7 +47,6 @@ export default function HomeComponent() {
   }, [])
 
   const products = useAppSelector((state) => state.product.products);
-  console.log("Products  :", products);
   const pageSizeOptions = [5,10,20];
   const [pageSize, setPageSize] = useState<number>(10);
   // Static dataset view; pagination controls are non-interactive in this view

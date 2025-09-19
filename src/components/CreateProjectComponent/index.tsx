@@ -9,9 +9,14 @@ import { useParams, useRouter } from "next/navigation";
 import { PRIVATE_PATH } from '@/utils/constant';
 import MultiSelect from "../ui/MultiSelect";
 import { editProject, projectdetailss } from "@/store/actions/projectAction";
+import { groups, IndexLocation, itemanatomy, projectAnalysisTypesItem, projectExamsItem, ProjectIndexLocationItem, visitIdsItem } from "@/types/authType";
+
+type ProjectFormProps =
+    | { mode: "create"; id?: never }
+    | { mode: "edit"; id: number };
 
 
-export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }) {
+export default function ProjectForm({ mode, id }: ProjectFormProps) {
 
     const defaultForm = {
         project_id: "",
@@ -39,12 +44,12 @@ export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }
                 name: projectdetails?.name,
                 account_name: projectdetails?.account_name,
                 regulated_project: projectdetails.regulated_project ? "true" : "false",
-                anatomy: projectdetails.anatomy?.map((item: any) => { return { id: item?.anatomy?.id, name: item?.anatomy?.name } }),
-                index_locations_id: projectdetails?.anatomy[0]?.projectIndexLocations.map((item: any) => { return { id: item?.indexLocation?.id, name: item?.indexLocation?.name } }),
-                exam_ids: projectdetails.projectExams.map((item: any) => { return { id: item?.exam?.id, name: item?.exam?.name } }),
-                analysis: projectdetails.projectExams[0].projectAnalysisTypes.map((item: any) => { return { id: item?.analysisType?.id, name: item?.analysisType?.name } }),
-                visit_ids: projectdetails.visitIds.map((item: any) => { return { id: item?.id, name: item?.name } }),
-                groups: projectdetails.groups.map((item: any) => { return { id: item?.id, name: item?.name } }),
+                anatomy: projectdetails.anatomy?.map((item: itemanatomy) => ({id: String(item.anatomy.id), name: item.anatomy.name, })) ?? [],
+                index_locations_id: projectdetails?.anatomy[0]?.projectIndexLocations.map((item: ProjectIndexLocationItem) => { return { id: String(item?.indexLocation?.id), name: item?.indexLocation?.name } }),
+                exam_ids: projectdetails.projectExams.map((item: projectExamsItem) => { return { id: String(item?.exam?.id), name: item?.exam?.name } }),
+                analysis: projectdetails.projectExams[0].projectAnalysisTypes.map((item: projectAnalysisTypesItem) => { return { id: String(item?.analysisType?.id), name: item?.analysisType?.name } }),
+                visit_ids: projectdetails.visitIds.map((item: visitIdsItem) => { return { id: String(item?.id), name: item?.name } }),
+                groups: projectdetails.groups.map((item: groups) => { return { id: String(item?.id), name: item?.name } }),
                 object_type_id: [{ id: projectdetails.objectType.id, name: projectdetails.objectType.name }],
 
 
@@ -69,10 +74,10 @@ export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { visit, exam, group, analysis, objectt, anatomies } = useAppSelector((state) => state.product)
-    const [indexLocation, setIndexLocation] = useState<any>([]);
+    const [indexLocation, setIndexLocation] = useState<IndexLocation[]>([]);
     const simpleValidator = useRef(
         new SimpleReactValidator({
-            element: (message: any) => <div style={{ color: "red" }}>{message}</div>,
+            element: (message: string) => <div style={{ color: "red" }}>{message}</div>,
         })
     );
     const [, forceUpdate] = useState({});
@@ -85,9 +90,9 @@ export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }
                     name: formData?.name,
                     account_name: formData?.account_name,
                     regulated_project: JSON.parse(formData?.regulated_project),
-                    anatomy: formData?.anatomy?.length ? parseInt((formData.anatomy[0] as any).id) : null,
+                    anatomy: formData?.anatomy?.length ? parseInt((formData.anatomy[0]).id) : null,
                     index_locations_id: formData?.index_locations_id?.map((item: any) => item?.id && parseInt(item.id)),
-                    object_type_id: formData?.object_type_id?.length ? parseInt((formData.object_type_id[0] as any).id) : null,
+                    object_type_id: formData?.object_type_id?.length ? parseInt((formData.object_type_id[0]).id) : null,
                     groups: formData?.groups?.map((item: any) => item?.id && parseInt(item.id)),
                     exam_ids: formData.exam_ids?.map((item: any) => item?.id && parseInt(item.id)),
                     analysis: formData.analysis?.map((item: any) => item?.id && parseInt(item.id)),
@@ -116,7 +121,7 @@ export default function Form({ mode, id }: { mode: "create" | "edit"; id?: any }
         }
     };
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement >) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
         forceUpdate({});
     }

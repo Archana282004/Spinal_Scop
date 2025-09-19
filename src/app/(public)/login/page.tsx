@@ -1,11 +1,13 @@
 "use client";
-
+interface Form {
+    email:string;
+    password:string
+}
 import Image from "next/image";
 import { useRef, useState } from "react";
 import SimpleReactValidator from "simple-react-validator";
 import { useRouter } from "next/navigation";
 import { PRIVATE_PATH } from "@/utils/constant";
-import config from "@/utils/config";
 import { useAppDispatch } from "@/store/hooks";
 import { login } from "@/store/actions/authAction";
 
@@ -14,21 +16,21 @@ const LoginPage = () => {
         email: "",
         password: ""
     }
-    const [formData, setFormData] = useState(defaultState);
-    const [error, setError] = useState("")
+    const [formData, setFormData] = useState<Form>(defaultState);
+    const [error, setError] = useState<string>("")
     const router = useRouter();
     const [, forceUpdate] = useState({});
     const dispatch = useAppDispatch();
 
      const simpleValidator = useRef(
     new SimpleReactValidator({
-      element: (message:any) => <div style={{ color: "red" }}>{message}</div>,
+      element: (message:string) => <div style={{ color: "red" }}>{message}</div>,
     })
   );
 
 
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e:  React.FormEvent ) => {
     
         e.preventDefault();
         if (simpleValidator.current.allValid()) {
@@ -48,7 +50,6 @@ const LoginPage = () => {
                 }
             } catch (err: any) {
                 setError("Error LogingIn")
-                console.log(err)
             }
         }
         else {

@@ -1,37 +1,73 @@
+import { addSite } from "@/store/actions/projectAction";
+import { useAppDispatch } from "@/store/hooks";
+import { SiteForm as SiteFormType } from "@/types/authType";
+import { useParams } from "next/navigation";
+import { useRef, useState } from "react";
+import SimpleReactValidator from "simple-react-validator";
 
 interface SiteFormProps {
-  isCreateSiteOpen: boolean;
-  handleCloseCreateSite: () => void;
-  handleCreateSite: (e: React.FormEvent<HTMLFormElement>) => void;
-  siteId: string;
-  setSiteId: React.Dispatch<React.SetStateAction<string>>;
-  siteName: string;
-  setSiteName: React.Dispatch<React.SetStateAction<string>>;
-  sitePi: string;
-  setSitePi: React.Dispatch<React.SetStateAction<string>>;
-}
-
-interface SiteForm {
-  name: string,
-  siteID: string,
-  sitePI: number | null,
-  level: string,
-  operation: string
+  selectedSite: string | null;
+  setIsCreateSiteOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  
 }
 
 const SiteForm: React.FC<SiteFormProps> = ({
-  isCreateSiteOpen,
-  handleCloseCreateSite,
-  handleCreateSite,
-  siteId,
-  setSiteId,
-  siteName,
-  setSiteName,
-  sitePi,
-  setSitePi
+  selectedSite,
+  setIsCreateSiteOpen
 }) => {
-  if (!isCreateSiteOpen) return null; 
-  
+  const defaultform = {
+    name: "",
+    siteID: "",
+    sitePI: "",
+    level: "",
+    operation: ""
+  }
+  const [formData, setFormData] = useState<SiteFormType>(defaultform);
+  const [error, setError] = useState<string>("");
+  const dispatchh = useAppDispatch();
+  const idd = useParams();
+  const id = Number(idd.slug)
+  const siteid = Number(selectedSite);
+  const handleCloseCreateSite = () => {
+    setIsCreateSiteOpen(false);
+
+  };
+  const simpleValidator = useRef(
+        new SimpleReactValidator({
+            element: (message: string) => <div style={{ color: "red" }}>{message}</div>,
+        })
+    );
+    const [, forceUpdate] = useState({});
+
+  const handleCreateSite = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (simpleValidator.current.allValid()){
+    try {
+      const payload = {
+        name: formData.name,
+        siteID: formData.siteID,
+        sitePI: formData.sitePI,
+        level: "Project",
+        operation: "create"
+      }
+
+      let res = await dispatchh(addSite(id, payload));
+
+    }
+    catch (err: any) {
+      setError(err)
+    }
+    handleCloseCreateSite();
+  }else {
+            simpleValidator.current.showMessages();
+            forceUpdate({});
+        }
+  };
+
+  const handleChange = (e: any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div>
 
@@ -58,35 +94,37 @@ const SiteForm: React.FC<SiteFormProps> = ({
                 <label className="block font-body text-sm text-foreground/80 mb-1">Site ID*</label>
                 <input
                   type="text"
-                  value={siteId}
-                  onChange={(e) => setSiteId(e.target.value)}
+                  value={formData.siteID}
+                  onChange={handleChange}
                   name="siteID"
                   placeholder="Site ID"
                   className="w-full rounded-md bg-background border border-foreground/20 focus:border-primary focus:ring-0 px-4 py-2 outline-none"
-                  required
                 />
+                {simpleValidator.current.message("siteID", formData.siteID, "required")}
               </div>
               <div>
                 <label className="block font-body text-sm text-foreground/80 mb-1">Site Name (optional)</label>
                 <input
                   type="text"
-                  value={siteName}
-                  onChange={(e) => setSiteName(e.target.value)}
-                  name="siteName"
+                  value={formData.name}
+                  onChange={handleChange}
+                  name="name"
                   placeholder="Site Name"
                   className="w-full rounded-md bg-background border border-foreground/20 focus:border-primary focus:ring-0 px-4 py-2 outline-none"
                 />
+                {simpleValidator.current.message("name", formData.name, "required")}
               </div>
               <div>
                 <label className="block font-body text-sm text-foreground/80 mb-1">Site PI (optional)</label>
                 <input
                   type="text"
-                  value={sitePi}
-                  onChange={(e) => setSitePi(e.target.value)}
+                  value={formData.sitePI}
+                  onChange={handleChange}
                   name="sitePI"
                   placeholder="Site PI"
                   className="w-full rounded-md bg-background border border-foreground/20 focus:border-primary focus:ring-0 px-4 py-2 outline-none"
                 />
+                {simpleValidator.current.message("sitePI", formData.sitePI, "required")}
               </div>
             </div>
             <div className="flex items-center justify-end gap-3 mt-6 px-1 pb-1">

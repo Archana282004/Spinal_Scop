@@ -4,10 +4,11 @@ import * as API from "../serverApiAction/clientApis";
 import * as authReducer from "../reducers/authReducer";
 import { forSuccess } from "@/utils/CommonService";
 import Cookies from "js-cookie";
+import { Login } from "@/types/authType";
 
 
 export const refreshToken = async (dispatch: AppDispatch) => {
-  const res: any = await API.get("/api/auth/refresh");
+  const res = await API.get("/api/auth/refresh");
 
   if (res?.token) {
     Cookies.set('token', res.token)
@@ -24,7 +25,7 @@ export const refreshToken = async (dispatch: AppDispatch) => {
 };
 
 
-export const login = (formData: any) => async (dispatch: AppDispatch) => {
+export const login = (formData: Login) => async (dispatch: AppDispatch) => {
     try {
    
       const res = await API.post("/auth/signIn", formData);

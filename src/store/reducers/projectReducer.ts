@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product, visit, exam, group, analysis, objectt, anatomies, ProjectDetail , Site} from '@/types/authType';
+import { Product, visit, exam, group, analysis, objectt, anatomies, ProjectDetail , Site, Subject} from '@/types/authType';
 
 interface ProductState {
   products: Product[];
@@ -10,7 +10,8 @@ interface ProductState {
   objectt: objectt[];
   anatomies: anatomies[];
   projectdetails: ProjectDetail | null;
-  sites:Site[]
+  sites:Site[];
+  subjects:Subject[]
 }
 
 const initialState: ProductState = {
@@ -22,7 +23,8 @@ const initialState: ProductState = {
   objectt: [],
   anatomies: [],
   projectdetails: null,
-  sites:[]
+  sites:[],
+  subjects:[]
 }
 export const projectSlice = createSlice({
   name: "product",
@@ -54,12 +56,16 @@ export const projectSlice = createSlice({
     },
     sitelisting: (state, action: PayloadAction<Site[]>) => {
       state.sites = action.payload;
+    },
+    subjectlisting: (state, action: PayloadAction<Subject[]>) => {
+      state.subjects = action.payload;
     }
+    
   }
 })
 
 
 
 
-export const { productlisting, visitIdslist, examIdslist, groupIdslist, analysisTypelist, objectTypelist, anatomylist, projectdetail , sitelisting} = projectSlice.actions;
+export const { productlisting, visitIdslist, examIdslist, groupIdslist, analysisTypelist, objectTypelist, anatomylist, projectdetail , sitelisting, subjectlisting} = projectSlice.actions;
 export default projectSlice.reducer;
